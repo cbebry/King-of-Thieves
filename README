@@ -1,5 +1,5 @@
 Notes
-	The ZFGCCP Engine for the project, "King Of Thieves" uses components from the game engine written by Gears Research and Development to help assist with improving the overall user and developer experience. The ZFGCCP Engine depends on Gears VGE to run and compile, so please pull our fork in the same directory of King Of Thieves in order to properly compile King Of Thieves.
+	The ZFGCCP Engine for the project, "King Of Thieves" uses components from the game engine written by Spectrum Branch to help assist with improving the overall user and developer experience. The ZFGCCP Engine depends on Gears VGE to run and compile, so please pull our fork in the same directory of King Of Thieves in order to properly compile King Of Thieves.
 
 
 	Go to https://github.com/ZFGCCP/gearsvge to access the fork.
