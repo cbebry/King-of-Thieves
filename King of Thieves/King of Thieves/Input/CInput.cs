@@ -4,23 +4,24 @@ using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework;
+using Gears.Cloud;
+using Gears.Cloud.Input;
 
 namespace King_of_Thieves.Input
 {
-    static class CInput
+    class CInput : InputHandler
     {
-        //git sanity test, don't mind me. -Steve
-        private static GamePadState _padStateCurrent;
-        private static KeyboardState _keyStateCurrent;
-        private static MouseState _mouseStateCurrent;
+        private GamePadState _padStateCurrent;
+        private KeyboardState _keyStateCurrent;
+        private MouseState _mouseStateCurrent;
 
-        private static GamePadState _padStatePrevious;
-        private static KeyboardState _keyStatePrevious;
-        private static MouseState _mouseStatePrevious;
-        public static keyEventArgs keyEvents = new keyEventArgs();
-        private static List<Keys> _temp = new List<Keys>();
+        private GamePadState _padStatePrevious;
+        private KeyboardState _keyStatePrevious;
+        private MouseState _mouseStatePrevious;
+        public keyEventArgs keyEvents = new keyEventArgs();
+        private List<Keys> _temp = new List<Keys>();
         
-        public static bool getInputDown(Buttons button)
+        public bool getInputDown(Buttons button)
         {
             if (!_padStateCurrent.IsConnected)
                 return false;
@@ -28,7 +29,7 @@ namespace King_of_Thieves.Input
             return _padStateCurrent.IsButtonDown(button);
         }
 
-        public static bool getInputDown(Keys key)
+        public bool getInputDown(Keys key)
         {
             if (_padStateCurrent.IsConnected)
                 return false;
@@ -36,7 +37,7 @@ namespace King_of_Thieves.Input
             return _keyStateCurrent.IsKeyDown(key);
         }
 
-        public static bool getInputRelease(Buttons button)
+        public bool getInputRelease(Buttons button)
         {
             if (!_padStateCurrent.IsConnected)
                 return false;
@@ -44,7 +45,7 @@ namespace King_of_Thieves.Input
             return (_padStatePrevious.IsButtonDown(button) && _padStateCurrent.IsButtonUp(button));
         }
 
-        public static bool getInputRelease(Keys key)
+        public bool getInputRelease(Keys key)
         {
             if (_padStateCurrent.IsConnected)
                 return false;
@@ -54,10 +55,10 @@ namespace King_of_Thieves.Input
             //MouseState x; x.
         }
 
-        public static bool getInputRelease(){return true;}
-        public static bool getInputDown() { return true; } //not quite sure how to handle the mouse buttons yet.  Doesn't seem as simple as the other types.
+        public bool getInputRelease(){return true;}
+        public bool getInputDown() { return true; } //not quite sure how to handle the mouse buttons yet.  Doesn't seem as simple as the other types.
 
-        public static int mouseX
+        public int mouseX
         {
             get
             {
@@ -65,7 +66,7 @@ namespace King_of_Thieves.Input
             }
         }
 
-        public static int mouseY
+        public int mouseY
         {
             get
             {
@@ -73,7 +74,7 @@ namespace King_of_Thieves.Input
             }
         }
 
-        public static int scrollWheel
+        public int scrollWheel
         {
             get
             {
@@ -81,7 +82,7 @@ namespace King_of_Thieves.Input
             }
         }
 
-        public static bool areKeysPressed
+        public bool areKeysPressed
         {
             get
             {
@@ -89,7 +90,7 @@ namespace King_of_Thieves.Input
             }
         }
 
-        public static Keys[] keysPressed
+        public Keys[] keysPressed
         {
             get
             {
@@ -97,7 +98,7 @@ namespace King_of_Thieves.Input
             }
         }
 
-        public static Keys[] keysReleased
+        public Keys[] keysReleased
         {
             get
             {
@@ -105,7 +106,7 @@ namespace King_of_Thieves.Input
             }
         }
 
-        public static Keys[] keysOld
+        public Keys[] keysOld
         {
             get
             {
@@ -113,7 +114,7 @@ namespace King_of_Thieves.Input
             }
         }
 
-        public static bool areKeysReleased
+        public bool areKeysReleased
         {
             get
             {
@@ -121,10 +122,9 @@ namespace King_of_Thieves.Input
             }
         }
 
-        //should be called once per frame
-        public static void update()
+
+        public override void Update(GameTime gameTime)
         {
-            
             _temp.Clear();
 
             if (keyEvents.oldKeys != null)
@@ -133,11 +133,11 @@ namespace King_of_Thieves.Input
                         _temp.Add(key);
 
             keyEvents.releasedKeys = _temp.ToArray();
-            
+
             _padStatePrevious = _padStateCurrent;
             _keyStatePrevious = _keyStateCurrent;
             _mouseStatePrevious = _mouseStateCurrent;
-             
+
 
             _padStateCurrent = GamePad.GetState(PlayerIndex.One);
             _keyStateCurrent = Keyboard.GetState();
@@ -145,8 +145,10 @@ namespace King_of_Thieves.Input
 
             //if (areKeysPressed)
             keyEvents.oldKeys = keyEvents.keys;
-                keyEvents.keys = keysPressed;
-        }  
+            keyEvents.keys = keysPressed;
+
+            //base.Update(gameTime);
+        }
     }
 
     class keyEventArgs : EventArgs

@@ -5,6 +5,7 @@ using System.Text;
 using King_of_Thieves.Input;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework;
+using Gears.Cloud;
 
 namespace King_of_Thieves.Actors.Menu
 {
@@ -85,9 +86,9 @@ namespace King_of_Thieves.Actors.Menu
 
         public override void keyDown(object sender)
         {
-            
 
-            if (CInput.keysPressed.Contains(Keys.Down))
+
+            if ((Master.GetInputManager().GetCurrentInputHandler() as CInput).keysPressed.Contains(Keys.Down))
             {
                 if (++_menuIndex >= _numberOfItems)
                     _menuIndex = 0;
@@ -95,7 +96,7 @@ namespace King_of_Thieves.Actors.Menu
                 if (_itemSwitch != null)
                     CMasterControl.audioPlayer.addSfx(_itemSwitch);
             }
-            else if (CInput.keysPressed.Contains(Keys.Up))
+            else if ((Master.GetInputManager().GetCurrentInputHandler() as CInput).keysPressed.Contains(Keys.Up))
             {
                 if (--_menuIndex >= _numberOfItems)
                     _menuIndex = _numberOfItems - 1;
@@ -104,7 +105,7 @@ namespace King_of_Thieves.Actors.Menu
                     CMasterControl.audioPlayer.addSfx(_itemSwitch);
             }
 
-            else if (CInput.keysPressed.Contains(Keys.Enter))
+            else if ((Master.GetInputManager().GetCurrentInputHandler() as CInput).keysPressed.Contains(Keys.Enter))
             {
                 CMasterControl.audioPlayer.addSfx(_itemSelect);
             }

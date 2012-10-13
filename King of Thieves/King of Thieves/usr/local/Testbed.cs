@@ -1,5 +1,7 @@
 ﻿using Gears.Navigation;
 using King_of_Thieves.Actors;
+using Gears.Cloud;
+using King_of_Thieves.Input;
 
 namespace King_of_Thieves.usr.local
 {
@@ -26,13 +28,13 @@ namespace King_of_Thieves.usr.local
         }
         public override void Update(Microsoft.Xna.Framework.GameTime gameTime)
         {
-            Input.CInput.update();
+            //Input.CInput.update();
 
             //compTest.root.position = new Vector2(Input.CInput.mouseX, Input.CInput.mouseY);
             compTest.updateActors(gameTime);
             //menuComo.updateActors(gameTime);
 
-            if (Input.CInput.getInputRelease(Microsoft.Xna.Framework.Input.Keys.Enter))
+            if ((Master.GetInputManager().GetCurrentInputHandler() as CInput).getInputRelease(Microsoft.Xna.Framework.Input.Keys.Enter))
             {
                 CMasterControl.audioPlayer.addSfx(CMasterControl.audioPlayer.soundBank["lttp_heart"]);
             }

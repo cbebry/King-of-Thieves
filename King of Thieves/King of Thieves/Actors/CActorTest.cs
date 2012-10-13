@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
+using King_of_Thieves.Input;
+using Gears.Cloud;
 
 namespace King_of_Thieves.Actors
 {
@@ -48,7 +50,7 @@ namespace King_of_Thieves.Actors
 
         public override void keyDown(object sender)
         {
-            if (Input.CInput.getInputDown(Microsoft.Xna.Framework.Input.Keys.D))
+            if ((Master.GetInputManager().GetCurrentInputHandler() as CInput).getInputDown(Microsoft.Xna.Framework.Input.Keys.D))
                 _position.X += 1;
 
             

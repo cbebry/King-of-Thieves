@@ -8,6 +8,7 @@ using King_of_Thieves.Actors;
 
 using Gears.Cloud;
 using King_of_Thieves.usr.local;
+using King_of_Thieves.Input;
 
 namespace King_of_Thieves
 {
@@ -62,11 +63,13 @@ namespace King_of_Thieves
             graphics.ApplyChanges();
             Graphics.CGraphics.acquireGraphics(ref graphics);
 
-            King_of_Thieves.usr.local.master.SetClearColor(Color.CornflowerBlue);
+            Master.SetClearColor(Color.CornflowerBlue);
 
             CTextures.init(Content);
 
-            King_of_Thieves.usr.local.master.Push(new Testbed(ref compTest, ref menuComo));
+            Master.Push(new Testbed(ref compTest, ref menuComo));
+
+            Master.GetInputManager().AddInputHandler(new CInput());
 
             base.Initialize();
         }
@@ -131,9 +134,11 @@ namespace King_of_Thieves
 
             // Allows the game to exit
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
+            {
                 this.Exit();
+            }
 
-             King_of_Thieves.usr.local.master.Update(gameTime);
+            Master.Update(gameTime);
 
             
             //CMasterControl.audioPlayer.Update();
@@ -146,15 +151,11 @@ namespace King_of_Thieves
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(King_of_Thieves.usr.local.master.GetClearColor());
+            GraphicsDevice.Clear(Master.GetClearColor());
 
             spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend);
 
-            
-
-            //menuComo.drawActors();
-
-            King_of_Thieves.usr.local.master.Draw(spriteBatch);
+            Master.Draw(spriteBatch);
 
             spriteBatch.End();
 

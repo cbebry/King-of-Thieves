@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
+using Gears.Cloud;
+using King_of_Thieves.Input;
 
 namespace King_of_Thieves.Actors.Player
 {
@@ -66,7 +68,7 @@ namespace King_of_Thieves.Actors.Player
         {
 
 
-            if (Input.CInput.keysPressed.Contains(Microsoft.Xna.Framework.Input.Keys.A))
+            if ((Master.GetInputManager().GetCurrentInputHandler() as CInput).keysPressed.Contains(Microsoft.Xna.Framework.Input.Keys.A))
             {
                 _position.X -= 1;
 
@@ -78,7 +80,7 @@ namespace King_of_Thieves.Actors.Player
                 _moving = true;
             }
 
-            if (Input.CInput.keysPressed.Contains(Microsoft.Xna.Framework.Input.Keys.D))
+            if ((Master.GetInputManager().GetCurrentInputHandler() as CInput).keysPressed.Contains(Microsoft.Xna.Framework.Input.Keys.D))
             {
                 _position.X += 1;
 
@@ -91,7 +93,7 @@ namespace King_of_Thieves.Actors.Player
             }
 
 
-            if (Input.CInput.keysPressed.Contains(Microsoft.Xna.Framework.Input.Keys.W))
+            if ((Master.GetInputManager().GetCurrentInputHandler() as CInput).keysPressed.Contains(Microsoft.Xna.Framework.Input.Keys.W))
             {
                 _position.Y -= 1;
 
@@ -103,7 +105,7 @@ namespace King_of_Thieves.Actors.Player
                 _moving = true;
             }
 
-            if (Input.CInput.keysPressed.Contains(Microsoft.Xna.Framework.Input.Keys.S))
+            if ((Master.GetInputManager().GetCurrentInputHandler() as CInput).keysPressed.Contains(Microsoft.Xna.Framework.Input.Keys.S))
             {
                 _position.Y += 1;
 
@@ -119,7 +121,7 @@ namespace King_of_Thieves.Actors.Player
         public override void keyRelease(object sender)
         {
             _moving = false;
-            if (!Input.CInput.areKeysPressed)
+            if (!(Master.GetInputManager().GetCurrentInputHandler() as CInput).areKeysPressed)
             {
                 
                 switch (_direction)

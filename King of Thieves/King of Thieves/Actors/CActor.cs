@@ -5,6 +5,8 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using King_of_Thieves.Graphics;
+using Gears.Cloud;
+using King_of_Thieves.Input;
 
 namespace King_of_Thieves.Actors
 {
@@ -124,10 +126,10 @@ namespace King_of_Thieves.Actors
             image.X = (int)_position.X;
             image.Y = (int)_position.Y;
 
-            if (Input.CInput.areKeysPressed)
+            if ((Master.GetInputManager().GetCurrentInputHandler() as CInput).areKeysPressed)
                 onKeyDown(this);
 
-            if (Input.CInput.areKeysReleased)
+            if ((Master.GetInputManager().GetCurrentInputHandler() as CInput).areKeysReleased)
                 onKeyRelease(this);
 
 
