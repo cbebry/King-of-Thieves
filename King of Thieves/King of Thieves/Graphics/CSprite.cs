@@ -16,14 +16,18 @@ namespace King_of_Thieves.Graphics
         private CTextureAtlas _imageAtlas;
         private int _frameTracker = 0;
         private int frameX = 0, frameY = 0;
+        private bool _flipH = false;
+        private bool _flipV = false;
         
 
-        public CSprite(CTextureAtlas atlas, Effect shader = null, params VertexPositionColor[] vertices)
+        public CSprite(CTextureAtlas atlas, Effect shader = null, bool flipH = false, bool flipV = false, params VertexPositionColor[] vertices)
             : base(shader, vertices)
         {
             _imageAtlas = atlas;
             _size = new Rectangle(0,0, atlas.FrameWidth, atlas.FrameHeight);
             _name = _imageAtlas.sourceImage.Name;
+            _flipH = flipH;
+            _flipV = flipV;
             CMasterControl.drawList.AddLast(this);
         }
 
@@ -49,12 +53,18 @@ namespace King_of_Thieves.Graphics
                     if (frameY >= _imageAtlas.tileYCount)
                         frameY = 0;
                 }
-                _size = _imageAtlas.getTile(frameX, frameY);
+                
             }
-
+            _size = _imageAtlas.getTile(frameX, frameY);
             _position.X = x; _position.Y = y;
             //CGraphics.spriteBatch.Draw(_imageAtlas.sourceImage, _position, _size, Color.White);
-            CGraphics.spriteBatch.Draw(_imageAtlas.sourceImage, _position, _size, Color.White);
+
+            if (!(_flipV || _flipH))
+                CGraphics.spriteBatch.Draw(_imageAtlas.sourceImage, _position, _size, Color.White);
+            else if (_flipV)
+                CGraphics.spriteBatch.Draw(_imageAtlas.sourceImage, _position, _size, Color.White, 0f, Vector2.Zero, 1.0f, SpriteEffects.FlipVertically, 0);
+            else if(_flipH)
+                CGraphics.spriteBatch.Draw(_imageAtlas.sourceImage, _position, _size, Color.White, 0f, Vector2.Zero, 1.0f, SpriteEffects.FlipHorizontally, 0);
             base.draw(x,y);
         }
 

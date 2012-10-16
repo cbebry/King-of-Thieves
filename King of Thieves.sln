@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual C# Express 2010
+# Visual Studio 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "King of Thieves", "King of Thieves\King of Thieves\King of Thieves.csproj", "{1516EA8A-7EF0-4196-8BB5-51CDBC61288C}"
 	ProjectSection(ProjectDependencies) = postProject
 		{B3F2860E-45F9-4BB3-B936-E749660F1969} = {B3F2860E-45F9-4BB3-B936-E749660F1969}
@@ -8,7 +8,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "King of Thieves", "King of 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "King of ThievesContent", "King of Thieves\King of ThievesContent\King of ThievesContent.contentproj", "{29094744-A42C-44B4-A870-159E095A6AB0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GearsVGE", "..\gearsvge\GearsVGE\GearsVGE\GearsVGE.csproj", "{B3F2860E-45F9-4BB3-B936-E749660F1969}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GearsVGE", "gearsvge\GearsVGE\GearsVGE\GearsVGE.csproj", "{B3F2860E-45F9-4BB3-B936-E749660F1969}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

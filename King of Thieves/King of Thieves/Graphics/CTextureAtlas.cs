@@ -34,7 +34,7 @@ namespace King_of_Thieves.Graphics
 
         public CTextureAtlas(Texture2D sourceImage, int _frameWidth, int _frameHeight, int _cellSpacing, int frameRate)
         {
-            _setup(sourceImage, _frameWidth, _frameHeight, _cellSpacing, frameRate);
+            _setup(ref sourceImage, _frameWidth, _frameHeight, _cellSpacing, frameRate);
         }
 
         public CTextureAtlas(Texture2D sourceImage, int _frameWidth, int _frameHeight, int _cellSpacing, string startCell, string endCell, int frameRate = 0, bool flipH = false, bool flipV = false)
@@ -65,27 +65,41 @@ namespace King_of_Thieves.Graphics
                 fullRange.Y = 0;
 
 
-            Color[] imageData = new Color[fullRange.Width* fullRange.Height];
-            sourceImage.GetData<Color>(0, fullRange, imageData, 0, imageData.Length);
+            //Color[] imageData = new Color[fullRange.Width* fullRange.Height];
+            //sourceImage.GetData<Color>(0, fullRange, imageData, 0, imageData.Length);
 
-            Texture2D newImage = new Texture2D(CGraphics.GPU, fullRange.Width, fullRange.Height);
-            newImage.SetData<Color>(imageData);
+            //Texture2D newImage = new Texture2D(CGraphics.GPU, fullRange.Width, fullRange.Height);
+            //newImage.SetData<Color>(imageData);
 
-            if (flipH && flipV)
-                newImage = CGraphics.Flip(newImage, true, true);
-            else if (flipH)
-                newImage = CGraphics.Flip(newImage, false, true);
-            else if (flipV)
-                newImage = CGraphics.Flip(newImage, true, false);
+            //if (flipH && flipV)
+            //    newImage = CGraphics.Flip(newImage, true, true);
+            //else if (flipH)
+            //    newImage = CGraphics.Flip(newImage, false, true);
+            //else if (flipV)
+            //    newImage = CGraphics.Flip(newImage, true, false);
 
 
             //do everything else
-            _setup(newImage, _frameWidth, _frameHeight, _cellSpacing, frameRate);
-            
+            //_setup(ref newImage, _frameWidth, _frameHeight, _cellSpacing, frameRate);
+            _setup(ref sourceImage, fullRange, _frameWidth, _frameHeight, _cellSpacing, frameRate);
+        }
+
+        private void _setup(ref Texture2D sourceImage, Rectangle sourceRect, int _frameWidth, int _frameHeight, int _cellSpacing, int frameRate)
+        {
+            FrameWidth = _frameWidth;
+            FrameHeight = _frameHeight;
+            CellSpacing = _cellSpacing;
+            _sourceImage = sourceImage;
+            FrameRate = frameRate;
+
+            _fixedWidth = (sourceRect.Width / (_frameWidth + _cellSpacing));
+            _fixedHeight = (sourceRect.Height / (_frameHeight + _cellSpacing));
+            _textureAtlas = new Rectangle[_fixedWidth, _fixedHeight];
+            _assembleTextureAtlas(this, sourceRect.X / (_frameWidth + CellSpacing), sourceRect.Y / (_frameHeight + CellSpacing));
 
         }
 
-        private void _setup(Texture2D sourceImage, int _frameWidth, int _frameHeight, int _cellSpacing, int frameRate)
+        private void _setup(ref Texture2D sourceImage, int _frameWidth, int _frameHeight, int _cellSpacing, int frameRate)
         {
             FrameWidth = _frameWidth;
             FrameHeight = _frameHeight;
@@ -133,17 +147,20 @@ namespace King_of_Thieves.Graphics
             * x == row
             * y == column
         */
-        private void _assembleTextureAtlas(CTextureAtlas textureAtlas)
+        private void _assembleTextureAtlas(CTextureAtlas textureAtlas, int xStart = 0, int yStart = 0)
         {
-            for (int y = 0; y <= _fixedHeight - 1; y++)
+            int xStartHold = xStart;
+            int yStartHold = yStart;
+            for (int y = 0; y <= _fixedHeight - 1; y++, yStart++)
             {
-                for (int x = 0; x <= _fixedWidth - 1; x++)
+                xStart = xStartHold;
+                for (int x = 0; x <= _fixedWidth - 1; x++, xStart++)
                 {
                     //NOW the math is completely fine! :)
                     //The math is completely fine. 
                     //this math seems a bit iffy due to the cellspacing, but we'll see how it goes! -Steve
                     textureAtlas._textureAtlas[x,y] = new Rectangle
-                        ((textureAtlas.FrameWidth + CellSpacing) * x, (textureAtlas.FrameHeight + CellSpacing) * y,
+                        ((textureAtlas.FrameWidth + CellSpacing) * xStart, (textureAtlas.FrameHeight + CellSpacing) * yStart,
                         textureAtlas.FrameWidth, 
                         textureAtlas.FrameHeight);
                 }

@@ -26,12 +26,12 @@ namespace King_of_Thieves.Actors.Player
             base._initializeResources();
             _imageIndex.Add("PlayerWalkDown", new Graphics.CSprite(Graphics.CTextures.texture("Player:WalkDown")));
             _imageIndex.Add("PlayerWalkLeft", new Graphics.CSprite(Graphics.CTextures.texture("Player:WalkLeft")));
-            _imageIndex.Add("PlayerWalkRight", new Graphics.CSprite(Graphics.CTextures.texture("Player:WalkRight")));
+            _imageIndex.Add("PlayerWalkRight", new Graphics.CSprite(Graphics.CTextures.texture("Player:WalkLeft"),null,true));
             _imageIndex.Add("PlayerWalkUp", new Graphics.CSprite(Graphics.CTextures.texture("Player:WalkUp")));
             _imageIndex.Add("PlayerIdleDown", new Graphics.CSprite(Graphics.CTextures.texture("Player:IdleDown")));
             _imageIndex.Add("PlayerIdleUp", new Graphics.CSprite(Graphics.CTextures.texture("Player:IdleUp")));
             _imageIndex.Add("PlayerIdleLeft", new Graphics.CSprite(Graphics.CTextures.texture("Player:IdleLeft")));
-            _imageIndex.Add("PlayerIdleRight", new Graphics.CSprite(Graphics.CTextures.texture("Player:IdleRight")));
+            _imageIndex.Add("PlayerIdleRight", new Graphics.CSprite(Graphics.CTextures.texture("Player:IdleLeft"),null,true));
         }
 
         public override void collide(object sender, object collider)
