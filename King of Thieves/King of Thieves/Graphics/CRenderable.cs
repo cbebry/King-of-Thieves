@@ -7,7 +7,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace King_of_Thieves.Graphics
 {
-    class CRenderable
+    public class CRenderable
     {
 
         private Effect _shader;

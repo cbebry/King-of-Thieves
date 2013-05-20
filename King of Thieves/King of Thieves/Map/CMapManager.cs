@@ -4,12 +4,13 @@ using System.Linq;
 using System.Text;
 using Gears.Cartography;
 using Gears.Playable;
+using Microsoft.Xna.Framework;
 
 namespace King_of_Thieves.Map
 {
     class CMapManager
     {
-        private CMap _currentMap;
+        private static CMap _currentMap;
         public Dictionary<string, CMap> mapPool = null;
 
         public CMapManager()
@@ -23,6 +24,30 @@ namespace King_of_Thieves.Map
             clear();
         }
 
+        public void drawMap()
+        {
+            if (_currentMap != null)
+                _currentMap.draw();
+        }
+
+        public void updateMap(GameTime gameTime)
+        {
+            if (_currentMap != null)
+                _currentMap.update(gameTime);
+        }
+
+        public static Actors.CActor[] queryActorRegistry(Type type, int layer)
+        {
+            try
+            {
+                return _currentMap.queryActorRegistry(type, layer);
+            }
+            catch (NullReferenceException)
+            {
+                return null;
+            }
+        }
+
         public void swapMap(string mapName)
         {
             _currentMap = mapPool[mapName];
@@ -32,6 +57,8 @@ namespace King_of_Thieves.Map
         {
             if (clearMaps)
                 clear();
+
+            
 
             foreach (string file in maps)
                 mapPool.Add(file, new CMap(file)); //temporary

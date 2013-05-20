@@ -11,5 +11,13 @@ namespace King_of_Thieves.Map
         {
             base.Register(components);
         }
+
+        //public Actors.CComponent components
+        //{
+        //    get
+        //    {
+        //        return base.units;
+        //    }
+        //}
     }
 }

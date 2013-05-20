@@ -55,8 +55,18 @@ namespace King_of_Thieves.Input
             //MouseState x; x.
         }
 
+
+
         public bool getInputRelease(){return true;}
         public bool getInputDown() { return true; } //not quite sure how to handle the mouse buttons yet.  Doesn't seem as simple as the other types.
+
+        public KeyboardState[] keyStates
+        {
+            get
+            {
+                return new KeyboardState[] { _keyStateCurrent, _keyStatePrevious };
+            }
+        }
 
         public int mouseX
         {
@@ -146,6 +156,13 @@ namespace King_of_Thieves.Input
             //if (areKeysPressed)
             keyEvents.oldKeys = keyEvents.keys;
             keyEvents.keys = keysPressed;
+
+            //pass the states to Gears
+            if (Master.Peek().GetType() == typeof(Gears.Navigation.MenuState))
+            {
+                ((Gears.Navigation.MenuState)Master.Peek()).KoTCurrentKeyboard = _keyStateCurrent;
+                ((Gears.Navigation.MenuState)Master.Peek()).KoTPreviousKeyboard = _keyStatePrevious;
+            }
 
             //base.Update(gameTime);
         }

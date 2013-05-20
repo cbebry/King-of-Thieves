@@ -33,15 +33,17 @@ namespace King_of_Thieves
 
         public Game1()
         {
-            graphics = new GraphicsDeviceManager(this); 
+            this.IsFixedTimeStep = false;
+            
+            graphics = new GraphicsDeviceManager(this);
+            graphics.SynchronizeWithVerticalRetrace = false;
+            GraphicsAdapter.UseReferenceDevice = false;
             //graphics.PreferredBackBufferHeight = ScreenHeight
             //graphics.PreferredBackBufferWidth = ScreenWidth;
             //graphics.SynchronizeWithVerticalRetrace = true;
             //graphics.ApplyChanges();
             
             Content.RootDirectory = @"Content";
-
-            IsFixedTimeStep = false;
         }
 
         /// <summary>
@@ -53,7 +55,8 @@ namespace King_of_Thieves
         protected override void Initialize()
         {
             //Register our ContentManager
-            ContentButler.setGame(this);
+            //ContentButler.setGame(this);
+            Master.Initialize(this);
 
             //Setup screen display/graphics device
             ViewportHandler.SetScreen(ScreenWidth, ScreenHeight);
@@ -64,11 +67,14 @@ namespace King_of_Thieves
             graphics.ApplyChanges();
             Graphics.CGraphics.acquireGraphics(ref graphics);
 
+            
+
             Master.SetClearColor(Color.CornflowerBlue);
 
             CTextures.init(Content);
 
-            Master.Push(new Testbed(ref compTest, ref menuComo));
+            Master.Push(new DevMenu());
+            //Master.Push(new PlayableState());
 
             Master.GetInputManager().AddInputHandler(new CInput());
 
@@ -84,16 +90,23 @@ namespace King_of_Thieves
             // Create a new SpriteBatch, which can be used to draw textures.
             CMasterControl.glblContent = Content;
             spriteBatch = new SpriteBatch(GraphicsDevice);
+            
             Graphics.CGraphics.spriteBatch = spriteBatch;
             CMasterControl.audioPlayer = new Sound.CAudioPlayer();
 
             // TODO: use this.Content to load your game content here
            // Graphics.CTextureDict.init(Content);
-            testSprite = new CSprite(new CTextureAtlas(Content.Load<Texture2D>("test"), 19, 23, 0));
+            //testSprite = new CSprite("test",new CTextureAtlas(Content.Load<Texture2D>("test"), "test", 19, 23, 0));
             
-            player = new Actors.Player.CPlayer();
-            compTest.root = player;
-            compTest.actors.Add("sword", new Actors.Items.Swords.CSword("sword", new Vector2(player.position.X - 13, player.position.Y - 13)));
+            //player = new Actors.Player.CPlayer();
+
+            
+            
+                
+            
+
+            //compTest.root = player;
+            //compTest.actors.Add("sword", new Actors.Items.Swords.CSword("sword", new Vector2(player.position.X - 13, player.position.Y - 13)));
 
             //CMasterControl.audioPlayer.soundBank.Add("04_-_Phantom_Ganon", new Sound.CSound(Content.Load<Song>("04_-_Phantom_Ganon"), false, 0));
             CMasterControl.audioPlayer.soundBank.Add("cursor", new Sound.CSound(Content.Load<SoundEffect>("cursor"),true));
@@ -104,9 +117,12 @@ namespace King_of_Thieves
             
 
             //when a component has been created, it must be added to the Comm Net.
-            CMasterControl.commNet.Add(0, new List<CActorPacket>());
+            //CMasterControl.commNet.Add(0, new List<CActorPacket>());
+            //CMasterControl.commNet.Add(1, new List<CActorPacket>());
 
             //CMasterControl.mapList.Add("TestMap",new Map.MTestMap("TestMap", Map.MAPTYPES.ROOT));
+            CMasterControl.mapManager.cacheMaps(false, "tiletester.xml");
+            CMasterControl.mapManager.swapMap("tiletester.xml");
             //CMasterControl.mapList.Add("TestMapPart1", new Map.MTestMap("TestMapPart1", Map.MAPTYPES.CHUNK));
             //Input.CMrMapIO.Save(CMasterControl.mapList["TestMap"].Map, "testmap.xml");
             //CMasterControl.audioPlayer.song = new Sound.CSound(Content.Load<Song>("04_-_Phantom_Ganon"), false, 0);
@@ -145,7 +161,7 @@ namespace King_of_Thieves
             }
 
             Master.Update(gameTime);
-
+            //CMasterControl.mapManager.updateMap(gameTime);
             
             //CMasterControl.audioPlayer.Update();
             base.Update(gameTime);
@@ -160,9 +176,10 @@ namespace King_of_Thieves
             GraphicsDevice.Clear(Master.GetClearColor());
 
             spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend);
+            //spriteBatch.Begin(SpriteSortMode.Immediate, null, null, null, RasterizerState.CullNone, null, globalTransformation);
 
             Master.Draw(spriteBatch);
-
+            //CMasterControl.mapManager.drawMap();
             spriteBatch.End();
 
             base.Draw(gameTime);

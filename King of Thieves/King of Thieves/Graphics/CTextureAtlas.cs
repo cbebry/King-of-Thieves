@@ -9,16 +9,18 @@ using System.Text.RegularExpressions;
 
 namespace King_of_Thieves.Graphics
 {
-    internal class CTextureAtlas
+    public class CTextureAtlas
     {
         public int FrameWidth = 0, FrameHeight = 0, FrameRate = 0, CellSpacing = 0, Column = 0, Row = 0, CurrentCell = 0;
         private Rectangle[,] _textureAtlas;
+        private string _atlasName;
         private Texture2D _sourceImage;
         private int _fixedWidth = 0, _fixedHeight = 0;
         private static Regex _cellFormat = new Regex("^[0-9]+:[0-9]+$");
         private static Regex _cellSplitter = new Regex(":");
+        private bool _isTileSet;
 
-        public CTextureAtlas(Texture2D sourceImage, int _frameWidth, int _frameHeight, int _cellSpacing)
+        public CTextureAtlas(Texture2D sourceImage, string source, int _frameWidth, int _frameHeight, int _cellSpacing)
         {
             FrameWidth = _frameWidth;
             FrameHeight = _frameHeight;
@@ -37,11 +39,11 @@ namespace King_of_Thieves.Graphics
             _setup(ref sourceImage, _frameWidth, _frameHeight, _cellSpacing, frameRate);
         }
 
-        public CTextureAtlas(Texture2D sourceImage, int _frameWidth, int _frameHeight, int _cellSpacing, string startCell, string endCell, int frameRate = 0, bool flipH = false, bool flipV = false)
+        public CTextureAtlas(string sourceImage, int _frameWidth, int _frameHeight, int _cellSpacing, string startCell, string endCell, int frameRate = 0, bool flipH = false, bool flipV = false, bool isTileSet = false)
         {
             //parse out the cell ranges
             if (!_cellFormat.IsMatch(startCell) || !_cellFormat.IsMatch(endCell))
-                throw new FormatException("Error in cell range format for " + sourceImage.Name + ".  Please use 99:99");
+                throw new FormatException("Error in cell range format for " + sourceImage + ". Please use 99:99");
             
             string[] start = _cellSplitter.Split(startCell);
             string[] end = _cellSplitter.Split(endCell);
@@ -51,6 +53,8 @@ namespace King_of_Thieves.Graphics
             float cellsY = _endCell.Y - _startCell.Y;
             int flipXOffSet = flipH ? 1 : 0;
             int flipYOffSet = flipV ? 1 : 0;
+            _atlasName = sourceImage;
+            _isTileSet = isTileSet;
 
 
 
@@ -64,32 +68,15 @@ namespace King_of_Thieves.Graphics
             if (_startCell.Y == 0)
                 fullRange.Y = 0;
 
-
-            //Color[] imageData = new Color[fullRange.Width* fullRange.Height];
-            //sourceImage.GetData<Color>(0, fullRange, imageData, 0, imageData.Length);
-
-            //Texture2D newImage = new Texture2D(CGraphics.GPU, fullRange.Width, fullRange.Height);
-            //newImage.SetData<Color>(imageData);
-
-            //if (flipH && flipV)
-            //    newImage = CGraphics.Flip(newImage, true, true);
-            //else if (flipH)
-            //    newImage = CGraphics.Flip(newImage, false, true);
-            //else if (flipV)
-            //    newImage = CGraphics.Flip(newImage, true, false);
-
-
-            //do everything else
-            //_setup(ref newImage, _frameWidth, _frameHeight, _cellSpacing, frameRate);
-            _setup(ref sourceImage, fullRange, _frameWidth, _frameHeight, _cellSpacing, frameRate);
+            _setup(sourceImage, fullRange, _frameWidth, _frameHeight, _cellSpacing, frameRate);
         }
 
-        private void _setup(ref Texture2D sourceImage, Rectangle sourceRect, int _frameWidth, int _frameHeight, int _cellSpacing, int frameRate)
+        private void _setup(string sourceImage, Rectangle sourceRect, int _frameWidth, int _frameHeight, int _cellSpacing, int frameRate)
         {
             FrameWidth = _frameWidth;
             FrameHeight = _frameHeight;
             CellSpacing = _cellSpacing;
-            _sourceImage = sourceImage;
+            _sourceImage = CTextures.rawTextures[sourceImage];
             FrameRate = frameRate;
 
             _fixedWidth = (sourceRect.Width / (_frameWidth + _cellSpacing));
@@ -114,11 +101,27 @@ namespace King_of_Thieves.Graphics
             _assembleTextureAtlas(this);
         }
 
+        public bool isTileSet
+        {
+            get
+            {
+                return _isTileSet;
+            }
+        }
+
         public Texture2D sourceImage
         {
             get
             {
                 return _sourceImage;
+            }
+        }
+
+        public string source
+        {
+            get
+            {
+                return _atlasName;
             }
         }
 
