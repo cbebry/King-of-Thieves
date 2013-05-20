@@ -7,7 +7,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace King_of_Thieves.Graphics
 {
-    class CAnimation
+    public class CAnimation
     {
         private float _counter = 0;
         private float _speed = 0;
